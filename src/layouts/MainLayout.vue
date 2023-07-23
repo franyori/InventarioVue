@@ -84,7 +84,7 @@
                 <q-item>
                     <q-expansion-item :content-inset-level="0.5" expand-separator icon="person" label="Terceros" no-caps>
                         <q-item-section side>
-                            <q-btn size="14px" to="/Persona" flat icon="person_add" label="Persona" no-caps color="primary"></q-btn>
+                            <q-btn size="14px" :to="{name:'personas'}" flat icon="person_add" label="Persona" no-caps color="primary"></q-btn>
                         </q-item-section>
                         <q-item-section side>
                             <q-btn size="14px" to="/Cliente" flat icon="person_add" label="Clientes" no-caps color="primary"></q-btn>
