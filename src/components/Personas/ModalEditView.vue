@@ -1,8 +1,8 @@
-<template>
+<template >
   <q-dialog
  
     v-model="persistente"
-    
+    :model-value="props.persistent"
     transition-show="scale"
     transition-hide="scale"
   >
@@ -14,16 +14,18 @@
     >
       <q-card-section>
         <div class="text-h6">Editar persona</div>
-        {{ props.persistent }}
-      </q-card-section>
+        {{ props.perById }}
+        <br>
+        {{ nombres_per }}
 
+      </q-card-section>
       <q-card-section class="q-pt-none">
-        <q-form id="form" @submit.prevent="updatePersona(), closeModal()">
+        <q-form id="form" @submit.prevent="">
           <div class="row q-col-gutter-md q-pb-md">
             <div class="q-gutter-md">
               <q-radio
                 dense
-                v-model="tipo_per"
+                v-model="dato.tipo_per"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="N"
@@ -31,7 +33,7 @@
               />
               <q-radio
                 dense
-                v-model="tipo_per"
+                v-model="dato.tipo_per"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="J"
@@ -41,10 +43,11 @@
           </div>
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-6">
-              <q-input
+              <q-input 
                 dense
                 filled
                 v-model="nombres_per"
+                :model-value="dato.nombres_per"
                 standout
                 bg-color="accent"
                 label="Nombres"
@@ -65,7 +68,7 @@
                 standout
                 bg-color="accent"
                 filled
-                v-model="apellidos_per"
+                v-model="dato.apellidos_per"
                 label="Apellidos"
                 hint="Primero y segundo"
                 lazy-rules
@@ -98,7 +101,7 @@
                 borderless
                 dense
                 filled
-                v-model="nacionalidad_per"
+                v-model="dato.nacionalidad_per"
                 :options="options"
                 bg-color="accent"
                 :rules="[
@@ -120,7 +123,7 @@
                 type="number"
                 dense
                 filled
-                v-model="documento_per"
+                v-model="dato.documento_per"
                 label="Cedula"
                 bg-color="accent"
               />
@@ -134,7 +137,7 @@
                 dense
                 filled
                 type="tel"
-                v-model="tlf_per"
+                v-model="dato.tlf_per"
                 standout
                 bg-color="accent"
                 label="Teléfono"
@@ -161,7 +164,7 @@
               <q-input
                 dense
                 filled
-                v-model="correo_per"
+                v-model="dato.correo_per"
                 type="email"
                 standout
                 bg-color="accent"
@@ -183,7 +186,7 @@
                 dense
                 color="black"
                 bg-color="accent"
-                v-model="fecha_nac_per"
+                v-model="dato.fecha_nac_per"
                 hint="Fecha nacimiento"
                 type="date"
                 lazy-rules
@@ -202,7 +205,7 @@
             <div class="col-12 col-md-6">
               <p class="col text-subtitle2">Dirección de habitación</p>
               <q-input
-                v-model="direccion_per"
+                v-model="dato.direccion_per"
                 filled
                 clearable
                 type="textarea"
@@ -217,7 +220,7 @@
               <div class="q-gutter-sm">
                 <q-radio
                   dense
-                  v-model="genero_per"
+                  v-model="dato.genero_per"
                   checked-icon="task_alt"
                   unchecked-icon="panorama_fish_eye"
                   val="M"
@@ -225,7 +228,7 @@
                 />
                 <q-radio
                   dense
-                  v-model="genero_per"
+                  v-model="dato.genero_per"
                   checked-icon="task_alt"
                   unchecked-icon="panorama_fish_eye"
                   val="F"
@@ -253,18 +256,23 @@
 <script setup>
 import { ref, defineProps,defineEmits } from 'vue';
 
-const props = defineProps({
-  persistent:Boolean
-})
-
+// const props = defineProps({
+//    persistent:Boolean,
+//    perById:Array
+//  })
+const props = defineProps(['persistent','perById'])
+//const options = ref(['V', 'E'])
 const persistente = ref(props.persistent)
-console.log(persistente)
 const emit = defineEmits(['closeModel'])
+const dato = ref(props.perById)
+const nombres_per = ref(dato.value.nombres_per)
+
 
 const closemodal  = (() => {
       let persistent = false
       emit('closeModel', false)
     })
+
 
 </script>
 

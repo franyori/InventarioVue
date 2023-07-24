@@ -16,7 +16,7 @@
 import List from '../components/Personas/ListView.vue'
 import Add from '../components/Personas/AddView.vue'
 import PersonaService from '../services/PersonaService.js'
-import { onMounted, onUpdated} from 'vue'
+import { onMounted, onUpdated ,provide, inject,ref} from 'vue'
 
 const PerService = new PersonaService()
 const ListPersona = PerService.getPersona()
@@ -31,5 +31,5 @@ await PerService.PersonaAll()
 console.log('update')
 })
 
-
+//provide('datos',ListPersona)
 </script>

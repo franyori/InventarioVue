@@ -7,10 +7,15 @@ import axios from 'axios'
 class ProductoService {
   constructor () {
     this.Persona = ref([])
+    this.editarPersona = ref([])
   }
 
   getPersona () {
     return this.Persona
+  }
+
+  getEditarPersona () {
+    return this.editarPersona
   }
 
   async PersonaAll () {
@@ -48,10 +53,7 @@ class ProductoService {
 
   async deletePersona (req, res) {
     try {
-      const lista = await axios.delete(
-        Global.url + 'persona/delete/' + `${req}`,
-        Headers
-      )
+      const lista = await axios.delete(Global.url + 'persona/delete/' + `${req}`,Headers)
       if (lista.status === 200) {
         Notify.create({
           type: 'positive',
@@ -73,17 +75,12 @@ class ProductoService {
 
   async editPersona (req, res) {
     try {
-      let list = await axios.get(
-        Global.url + 'persona/show/' + `${req}`,
-        Headers
-      )
-      this.editApi = list.data
+      let list = await axios.get(Global.url + 'persona/show/' + `${req}`,Headers)
+      const respu = (this.editarPersona.value = list.data)
     } catch (error) {
       console.log(error)
     }
   }
-
-  
 }
 
 export default ProductoService
