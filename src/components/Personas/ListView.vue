@@ -1,8 +1,7 @@
 <template>
-  <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12 q-pa-md">
-    <!-- <ul>
-<li v-for="dato in datos" :key="dato.id">{{dato.documento_per}}</li>
-</ul> -->
+  <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12 q-pa-md"> 
+    <button @click="store.editPersona(2)">oo</button>
+    {{ store.PersonaById.id }} 
     <q-card>
       <q-card-section class="q-pa-none">
         <q-table
@@ -41,7 +40,7 @@
                 size="xs"
                 class="q-ma-none"
                 color="primary"
-                @click="openModal(), EditarPersona(props.row.id)"
+                @click="openModal(), store.editPersona(props.row.id), EditarPersona(props.row.id)"
               />
               <q-btn
                 flat
@@ -68,10 +67,12 @@
 
 <script setup>
 import ModalEdit from './ModalEditView.vue'
-import { ref, defineProps, inject } from 'vue'
+import { ref, nextTick, onUpdated,provide} from 'vue'
 import PersonaService from '../../services/PersonaService'
-//const datos = inject('datos')
+//provide('data',props)
 
+import {  usePersonaByIdStore} from '../../stores/PersonaByIdStore';
+const store = usePersonaByIdStore()
 const rows = ref([])
 const persistent = ref(false)
 const initialPagination = ref({
@@ -83,22 +84,22 @@ const initialPagination = ref({
 const filter = ref('')
 const editApi = ref({})
 const props = defineProps(['apiList'])
+const PerService = new PersonaService()
 
+ onUpdated(async () => {
+  await PerService.PersonaAll()
+   console.log("update")
+ })
 
 const DeletePersona = async id => {
-  const deletePersonaService = new PersonaService()
-  const deletePersona = await deletePersonaService.deletePersona(id)
+  await PerService.deletePersona(id)
+  await nextTick()
 }
 
 const EditarPersona = async id => {
-  const EditarPersonaService = new PersonaService()
-  const dataEditPer = await EditarPersonaService.editPersona(id)
-  editApi.value = EditarPersonaService.getEditarPersona()
+  await PerService.editPersona(id)
+  editApi.value =  PerService.getEditarPersona()
 }
-
-//const personaEdita = new PersonaService()
-//const dataEditPer.value = personaEdita.getEditarPersona()
-
 
 const openModal = () => {
   persistent.value = true

@@ -7,7 +7,7 @@ import axios from 'axios'
 class ProductoService {
   constructor () {
     this.Persona = ref([])
-    this.editarPersona = ref([])
+    this.editarPersona = ref({})
   }
 
   getPersona () {
@@ -77,6 +77,7 @@ class ProductoService {
     try {
       let list = await axios.get(Global.url + 'persona/show/' + `${req}`,Headers)
       const respu = (this.editarPersona.value = list.data)
+      console.log(respu)
     } catch (error) {
       console.log(error)
     }

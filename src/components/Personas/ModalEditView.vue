@@ -16,8 +16,7 @@
         <div class="text-h6">Editar persona</div>
         {{ props.perById }}
         <br>
-        {{ nombres_per }}
-
+{{ dato.value }}
       </q-card-section>
       <q-card-section class="q-pt-none">
         <q-form id="form" @submit.prevent="">
@@ -44,10 +43,10 @@
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-6">
               <q-input 
-                dense
+                denseS
                 filled
-                v-model="nombres_per"
-                :model-value="dato.nombres_per"
+                v-model="dato.nombres_per"
+                :model-value="perById.nombres_per"
                 standout
                 bg-color="accent"
                 label="Nombres"
@@ -68,7 +67,7 @@
                 standout
                 bg-color="accent"
                 filled
-                v-model="dato.apellidos_per"
+                v-model="store.PersonaById.apellidos_per"
                 label="Apellidos"
                 hint="Primero y segundo"
                 lazy-rules
@@ -254,22 +253,25 @@
 </template>
 
 <script setup>
-import { ref, defineProps,defineEmits } from 'vue';
+import { ref, inject } from 'vue';
+//const datos = inject('data')
+ const props = defineProps({
+    persistent:Boolean,
+    perById:Object
+  })
 
-// const props = defineProps({
-//    persistent:Boolean,
-//    perById:Array
-//  })
-const props = defineProps(['persistent','perById'])
-//const options = ref(['V', 'E'])
+import {  usePersonaByIdStore} from '../../stores/PersonaByIdStore';
+const store = usePersonaByIdStore()
+//const props = defineProps(['persistent','perById'])
+const options = ref(['V', 'E'])
 const persistente = ref(props.persistent)
 const emit = defineEmits(['closeModel'])
 const dato = ref(props.perById)
-const nombres_per = ref(dato.value.nombres_per)
+const perById = ref(props.perById)
+//const nombres_per = ref(dato.value.nombres_per)
 
 
 const closemodal  = (() => {
-      let persistent = false
       emit('closeModel', false)
     })
 
