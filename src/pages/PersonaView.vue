@@ -15,11 +15,18 @@
 <script setup>
 import List from '../components/Personas/ListView.vue'
 import Add from '../components/Personas/AddView.vue'
+<<<<<<< Updated upstream
 import PersonaService from '../services/PersonaService.js'
 import { onMounted,onUpdated,provide,ref} from 'vue'
 const PerService = new PersonaService()
 const ListPersona = ref(PerService.getPersona())
 //provide('data',ListPersona)
+=======
+import { usePersonaStore } from 'src/stores/PersonaStore';
+import { onMounted,onUpdated} from 'vue'
+
+
+>>>>>>> Stashed changes
 
  onMounted(async () => {
   await PerService.PersonaAll()
