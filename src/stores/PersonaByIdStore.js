@@ -8,7 +8,7 @@ import { Notify } from 'quasar'
 export const usePersonaByIdStore = defineStore('personaid', {
   state: () => {
     return {
-      PersonaById:[],
+      PersonaById:ref([]),
       Persona:ref([])
     }
   },
@@ -22,7 +22,6 @@ export const usePersonaByIdStore = defineStore('personaid', {
       try {
         let getAll = await axios.get(Global.url + 'persona/list', Headers)
         const resp = (this.Persona = getAll.data)
-        ///console.log(resp)
       } catch (error) {
         console.log(error)
       }

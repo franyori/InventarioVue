@@ -72,7 +72,6 @@ import PersonaService from '../../services/PersonaService'
 //provide('data',props)
 import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore';
 import { getCurrentInstance } from 'vue'
-import { set } from 'pinia/node_modules/vue-demi';
 
 const instance = getCurrentInstance();
 const store = usePersonaByIdStore()
