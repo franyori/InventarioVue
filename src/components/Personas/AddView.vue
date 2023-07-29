@@ -250,10 +250,12 @@
 </template>
 <script setup>
 import { Notify } from 'quasar'
-import { ref } from 'vue'
+import { ref , onUpdated} from 'vue'
 import { useQuasar } from 'quasar'
 import PersonaService from '../../services/PersonaService'
+import { getCurrentInstance } from 'vue'
 
+const instance = getCurrentInstance();
 const $q = useQuasar()
 const genero = ref('M')
 const shape = ref('N')
@@ -311,10 +313,18 @@ const params = {
 }
 
 
+const addPersonaService = new PersonaService()
+
   const AddPersona = async () => {
   const propss  = ref(params)
-  const addPersonaService = new PersonaService()
-  const addPersona = await addPersonaService.addPer(propss.value)
+  await addPersonaService.addPer(propss.value)
+  instance.proxy.$forceUpdate()
   
-}
+};
+ 
+onUpdated(async () => {
+  await addPersonaService.PersonaAll()
+
+console.log("up")
+});
 </script>

@@ -273,7 +273,7 @@ const perById = ref(props.perById)
 
 const closemodal  = (() => {
       emit('closeModel', false)
-    })
+    });
 
 
 </script>

@@ -2,10 +2,11 @@
   <router-view />
 </template>
 
-<script>
+<script septup>
+
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'App'
-})
+});
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12 q-pa-md"> 
-    <button @click="store.editPersona(2)">oo</button>
     {{ store.PersonaById.id }} 
     <q-card>
       <q-card-section class="q-pa-none">
         <q-table
-          :rows="props.apiList"
+          :rows="data"
           :columns="columns"
-          row-key="id"
+          ref="tableRef"
+          :row-key="data.id"
           dense
           :filter="filter"
           :pagination="initialPagination"
@@ -67,13 +67,16 @@
 
 <script setup>
 import ModalEdit from './ModalEditView.vue'
-import { ref, nextTick, onUpdated,provide} from 'vue'
+import { ref, nextTick, onUpdated,provide, onMounted, computed, reactive} from 'vue'
 import PersonaService from '../../services/PersonaService'
 //provide('data',props)
+import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore';
+import { getCurrentInstance } from 'vue'
+import { set } from 'pinia/node_modules/vue-demi';
 
-import {  usePersonaByIdStore} from '../../stores/PersonaByIdStore';
+const instance = getCurrentInstance();
 const store = usePersonaByIdStore()
-const rows = ref([])
+const tableRef = ref()
 const persistent = ref(false)
 const initialPagination = ref({
   sortBy: 'desc',
@@ -81,19 +84,26 @@ const initialPagination = ref({
   page: 1,
   rowsPerPage: 10
 })
+
 const filter = ref('')
 const editApi = ref({})
 const props = defineProps(['apiList'])
+const inputs = computed({
+  get:()=>props.apiList,
+})
 const PerService = new PersonaService()
+const data  = ref(PerService.getPersona())
 
- onUpdated(async () => {
+onUpdated(async () => {
   await PerService.PersonaAll()
-   console.log("update")
- })
+  tableRef.value.requestServerInteraction()
+console.log("update")
+})
+
 
 const DeletePersona = async id => {
   await PerService.deletePersona(id)
-  await nextTick()
+  instance.proxy.$forceUpdate()
 }
 
 const EditarPersona = async id => {
@@ -149,5 +159,5 @@ const columns = [
     align: 'center',
     label: 'Acciones'
   }
-]
+];
 </script>

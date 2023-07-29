@@ -16,20 +16,15 @@
 import List from '../components/Personas/ListView.vue'
 import Add from '../components/Personas/AddView.vue'
 import PersonaService from '../services/PersonaService.js'
-import { onMounted,onUpdated,provide} from 'vue'
-
+import { onMounted,onUpdated,provide,ref} from 'vue'
 const PerService = new PersonaService()
-const ListPersona = PerService.getPersona()
+const ListPersona = ref(PerService.getPersona())
 //provide('data',ListPersona)
 
  onMounted(async () => {
-   await PerService.PersonaAll()
-   console.log("mount")
- })
+  await PerService.PersonaAll()
+ console.log('mount')
+ });
 
-onUpdated(async () => {
-await PerService.PersonaAll()
-console.log("up")
-})
-
+ 
 </script>
