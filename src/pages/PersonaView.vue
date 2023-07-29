@@ -17,8 +17,8 @@ import List from '../components/Personas/ListView.vue'
 import Add from '../components/Personas/AddView.vue'
 import PersonaService from '../services/PersonaService.js'
 import { onMounted,onUpdated,provide,ref} from 'vue'
-//const PerService = new PersonaService()
-//const ListPersona = ref(PerService.getPersona())
+const PerService = new PersonaService()
+const ListPersona = ref(PerService.getPersona())
 //provide('data',ListPersona)
 
  onMounted(async () => {
