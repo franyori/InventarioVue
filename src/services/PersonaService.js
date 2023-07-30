@@ -22,7 +22,6 @@ class ProductoService {
     try {
       let getAll = await axios.get(Global.url + 'persona/list', Headers)
       const resp = (this.Persona.value = getAll.data)
-      ///console.log(resp)
     } catch (error) {
       console.log(error)
     }
@@ -38,7 +37,6 @@ class ProductoService {
           color: 'positive',
           position: 'bottom-right'
         })
-        //this.onReset()
       }
     } catch (error) {
       console.log(error)
@@ -77,7 +75,6 @@ class ProductoService {
     try {
       let list = await axios.get(Global.url + 'persona/show/' + `${req}`,Headers)
       const respu = (this.editarPersona.value = list.data)
-      console.log(respu)
     } catch (error) {
       console.log(error)
     }

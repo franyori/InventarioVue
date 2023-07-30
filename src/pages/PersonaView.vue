@@ -6,7 +6,7 @@
       </div>
     </div>
   <div class="row">
-      <List :apiList="ListPersona" /> 
+      <List /> 
       <Add /> 
   </div>
   </q-page>
@@ -15,15 +15,13 @@
 <script setup>
 import List from '../components/Personas/ListView.vue'
 import Add from '../components/Personas/AddView.vue'
-import PersonaService from '../services/PersonaService.js'
-import { onMounted,onUpdated,provide,ref} from 'vue'
-const PerService = new PersonaService()
-const ListPersona = ref(PerService.getPersona())
+import { onMounted,provide} from 'vue'
+import {  usePersonaByIdStore } from '../stores/PersonaByIdStore';
+const store = usePersonaByIdStore()
 //provide('data',ListPersona)
 
  onMounted(async () => {
-await PerService.PersonaAll()
- console.log('mount')
+await store.PersonaAll()
  });
 
  

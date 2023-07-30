@@ -1,12 +1,10 @@
-<template >
+<template>
   <q-dialog
- 
     v-model="persistente"
     :model-value="props.persistent"
     transition-show="scale"
     transition-hide="scale"
   >
-  
     <q-card
       flat
       class="text-primary bg-white"
@@ -14,17 +12,15 @@
     >
       <q-card-section>
         <div class="text-h6">Editar persona</div>
-        {{ props.perById }}
-        <br>
-{{ dato.value }}
+        <br />
       </q-card-section>
       <q-card-section class="q-pt-none">
-        <q-form id="form" @submit.prevent="">
+        <q-form id="form" @submit.prevent.stop="UpdatePersona(), closemodal()">
           <div class="row q-col-gutter-md q-pb-md">
             <div class="q-gutter-md">
               <q-radio
                 dense
-                v-model="dato.tipo_per"
+                v-model="store.PersonaById.tipo_per"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="N"
@@ -32,7 +28,7 @@
               />
               <q-radio
                 dense
-                v-model="dato.tipo_per"
+                v-model="store.PersonaById.tipo_per"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="J"
@@ -42,11 +38,10 @@
           </div>
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-6">
-              <q-input 
+              <q-input
                 denseS
                 filled
-                v-model="dato.nombres_per"
-                :model-value="perById.nombres_per"
+                v-model="store.PersonaById.nombres_per"
                 standout
                 bg-color="accent"
                 label="Nombres"
@@ -100,7 +95,7 @@
                 borderless
                 dense
                 filled
-                v-model="dato.nacionalidad_per"
+                v-model="store.PersonaById.nacionalidad_per"
                 :options="options"
                 bg-color="accent"
                 :rules="[
@@ -122,7 +117,7 @@
                 type="number"
                 dense
                 filled
-                v-model="dato.documento_per"
+                v-model="store.PersonaById.documento_per"
                 label="Cedula"
                 bg-color="accent"
               />
@@ -136,7 +131,7 @@
                 dense
                 filled
                 type="tel"
-                v-model="dato.tlf_per"
+                v-model="store.PersonaById.tlf_per"
                 standout
                 bg-color="accent"
                 label="Teléfono"
@@ -163,7 +158,7 @@
               <q-input
                 dense
                 filled
-                v-model="dato.correo_per"
+                v-model="store.PersonaById.correo_per"
                 type="email"
                 standout
                 bg-color="accent"
@@ -185,7 +180,7 @@
                 dense
                 color="black"
                 bg-color="accent"
-                v-model="dato.fecha_nac_per"
+                v-model="store.PersonaById.fecha_nac_per"
                 hint="Fecha nacimiento"
                 type="date"
                 lazy-rules
@@ -204,7 +199,7 @@
             <div class="col-12 col-md-6">
               <p class="col text-subtitle2">Dirección de habitación</p>
               <q-input
-                v-model="dato.direccion_per"
+                v-model="store.PersonaById.direccion_per"
                 filled
                 clearable
                 type="textarea"
@@ -219,7 +214,7 @@
               <div class="q-gutter-sm">
                 <q-radio
                   dense
-                  v-model="dato.genero_per"
+                  v-model="store.PersonaById.genero_per"
                   checked-icon="task_alt"
                   unchecked-icon="panorama_fish_eye"
                   val="M"
@@ -227,7 +222,7 @@
                 />
                 <q-radio
                   dense
-                  v-model="dato.genero_per"
+                  v-model="store.PersonaById.genero_per"
                   checked-icon="task_alt"
                   unchecked-icon="panorama_fish_eye"
                   val="F"
@@ -239,7 +234,13 @@
         </q-form>
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn no-caps label="Guardar" type="submit" color="primary" />
+        <q-btn
+          no-caps
+          label="Guardar"
+          type="submit"
+          color="primary"
+          @click="UpdatePersona(),closemodal()"
+        />
         <q-btn
           no-caps
           label="Cancelar"
@@ -253,28 +254,37 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
+import { ref, inject } from 'vue'
 //const datos = inject('data')
- const props = defineProps({
-    persistent:Boolean,
-    perById:Object
-  })
+const props = defineProps({
+  persistent: Boolean
+})
 
-import {  usePersonaByIdStore} from '../../stores/PersonaByIdStore';
+import { usePersonaByIdStore } from '../../stores/PersonaByIdStore'
 const store = usePersonaByIdStore()
-//const props = defineProps(['persistent','perById'])
+
 const options = ref(['V', 'E'])
 const persistente = ref(props.persistent)
 const emit = defineEmits(['closeModel'])
-const dato = ref(props.perById)
-const perById = ref(props.perById)
-//const nombres_per = ref(dato.value.nombres_per)
 
+const UpdatePersona = async () => {
+  const params = ref({
+    nacionalidad_per: store.PersonaById.nacionalidad_per,
+    tipo_per: store.PersonaById.tipo_per,
+    documento_per: store.PersonaById.documento_per,
+    nombres_per: store.PersonaById.nombres_per,
+    apellidos_per: store.PersonaById.apellidos_per,
+    correo_per: store.PersonaById.correo_per,
+    tlf_per: store.PersonaById.tlf_per,
+    direccion_per: store.PersonaById.direccion_per,
+    fecha_nac_per: store.PersonaById.fecha_nac_per,
+    genero_per: store.PersonaById.genero_per
+  })
+  const id = ref(store.PersonaById.id)
+  await store.updatePersona(params.value, id.value)
+}
 
-const closemodal  = (() => {
-      emit('closeModel', false)
-    });
-
-
+const closemodal = () => {
+  emit('closeModel', false)
+};
 </script>
-

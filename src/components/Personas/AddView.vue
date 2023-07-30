@@ -13,7 +13,7 @@
           <p class="text-subtitle2">Tipo de persona</p>
         </div>
       </div>
-      <q-form @submit.prevent="AddPersona" @reset="onReset">
+      <q-form @submit.prevent.stop="AddPersona" @reset="onReset()">
         <div class="row">
           <div class="col q-pt-none q-pl-md q-pr-md q-pb-md">
             <div class="q-gutter-sm">
@@ -119,13 +119,18 @@
             <q-input
               borderless
               type="number"
+              maxlength='10'
               dense
               filled
               v-model="cedula"
               label="Cedula"
               bg-color="accent"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Cedula Invalidad']"
+              :rules="[val => (val && val.length > 0) || 'Cedula Invalidad',
+                       val => val.length >= 6  || 'Minimo 6 Digitos',
+                       val => val.length <= 10  || 'No Mayor de 10 Digitos'
+
+            ]"
             />
           </div>
         </div>
@@ -254,7 +259,9 @@ import { ref , onUpdated} from 'vue'
 import { useQuasar } from 'quasar'
 import PersonaService from '../../services/PersonaService'
 import { getCurrentInstance } from 'vue'
+import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore'
 
+const store = usePersonaByIdStore()
 const instance = getCurrentInstance();
 const $q = useQuasar()
 const genero = ref('M')
@@ -267,38 +274,21 @@ const telefono = ref('')
 const nacimiento = ref('')
 const direccion = ref('')
 const nacionalidad = ref('')
-const accept = ref(false)
-const model = ref(null)
 const options = ref(['V', 'E'])
 
 const onReset = () => {
   name.value = null
-  cedula.value = null
-  correo.value = null
-  telefono.value = null
-  apellido.value = null
-  direccion.value = null
-  nacionalidad.value = null
+  cedula.value = ''
+  correo.value = ''
+  telefono.value = ''
+  apellido.value = ''
+  direccion.value = ''
+  nacionalidad.value = ''
   shape.value = 'N'
   genero.value = 'M'
 }
 
-const onSubmit = () => {
-  if (accept.value !== true) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning'
-    })
-  } else {
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Submitted'
-    })
-  }
-}
+
 const params = {
   nombres_per: name,
   documento_per: cedula,
@@ -318,13 +308,12 @@ const addPersonaService = new PersonaService()
   const AddPersona = async () => {
   const propss  = ref(params)
   await addPersonaService.addPer(propss.value)
+  onReset()
   instance.proxy.$forceUpdate()
   
 };
  
 onUpdated(async () => {
-  await addPersonaService.PersonaAll()
-
-console.log("up")
+await store.PersonaAll()
 });
 </script>

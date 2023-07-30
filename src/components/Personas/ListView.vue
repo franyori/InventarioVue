@@ -1,13 +1,12 @@
 <template>
   <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12 q-pa-md"> 
-    {{ store.PersonaById.id }} 
     <q-card>
       <q-card-section class="q-pa-none">
         <q-table
-          :rows="data"
+          :rows="store.Persona"
           :columns="columns"
           ref="tableRef"
-          :row-key="data.id"
+          row-key="id"
           dense
           :filter="filter"
           :pagination="initialPagination"
@@ -40,7 +39,7 @@
                 size="xs"
                 class="q-ma-none"
                 color="primary"
-                @click="openModal(), store.editPersona(props.row.id), EditarPersona(props.row.id)"
+                @click="openModal(), EditarPersona(props.row.id)"
               />
               <q-btn
                 flat
@@ -58,7 +57,6 @@
     </q-card>
     <ModalEdit
       :persistent="persistent"
-      :perById="editApi"
       @closeModel="persistent = false"
     >
     </ModalEdit>
@@ -67,8 +65,7 @@
 
 <script setup>
 import ModalEdit from './ModalEditView.vue'
-import { ref, nextTick, onUpdated,provide, onMounted, computed, reactive} from 'vue'
-import PersonaService from '../../services/PersonaService'
+import { ref, onUpdated} from 'vue'
 //provide('data',props)
 import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore';
 import { getCurrentInstance } from 'vue'
@@ -85,29 +82,20 @@ const initialPagination = ref({
 })
 
 const filter = ref('')
-const editApi = ref({})
-const props = defineProps(['apiList'])
-const inputs = computed({
-  get:()=>props.apiList,
-})
-const PerService = new PersonaService()
-const data  = ref(PerService.getPersona())
 
 onUpdated(async () => {
-  await PerService.PersonaAll()
+ await store.PersonaAll()
   tableRef.value.requestServerInteraction()
-console.log("update")
 })
 
 
 const DeletePersona = async id => {
-  await PerService.deletePersona(id)
+  await store.deletePersona(id)
   instance.proxy.$forceUpdate()
 }
 
 const EditarPersona = async id => {
-  await PerService.editPersona(id)
-  editApi.value =  PerService.getEditarPersona()
+  await store.editPersona(id)
 }
 
 const openModal = () => {

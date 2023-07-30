@@ -8,16 +8,14 @@ import { Notify } from 'quasar'
 export const usePersonaByIdStore = defineStore('personaid', {
   state: () => {
     return {
-      PersonaById:ref([]),
-      Persona:ref([])
+      PersonaById: ref([]),
+      Persona: ref([])
     }
   },
 
-  getters: {
-  },
+  getters: {},
 
   actions: {
-
     async PersonaAll () {
       try {
         let getAll = await axios.get(Global.url + 'persona/list', Headers)
@@ -28,34 +26,67 @@ export const usePersonaByIdStore = defineStore('personaid', {
     },
 
     async editPersona (req, res) {
-        try {
-          let list = await axios.get(Global.url + 'persona/show/' + `${req}`,Headers)
-          const respu = (this.PersonaById = list.data)
-        } catch (error) {
-          console.log(error)
-        }
-      },
+      try {
+        let list = await axios.get(
+          Global.url + 'persona/show/' + `${req}`,
+          Headers
+        )
+        const respu = (this.PersonaById = list.data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
 
-      async deletePersona (req, res) {
-        try {
-          const lista = await axios.delete(Global.url + 'persona/delete/' + `${req}`,Headers)
-          if (lista.status === 200) {
-            Notify.create({
-              type: 'positive',
-              message: 'Persona Eliminada!',
-              color: 'positive',
-              position: 'center'
-            })
-          }
-        } catch (error) {
-          console.log(error)
+    async deletePersona (req, res) {
+      try {
+        const lista = await axios.delete(
+          Global.url + 'persona/delete/' + `${req}`,
+          Headers
+        )
+        if (lista.status === 200) {
           Notify.create({
-            type: 'warning',
-            message: 'Esta Empresa esta Asociada A un Proveedor!',
-            color: 'warning',
+            type: 'positive',
+            message: 'Persona Eliminada!',
+            color: 'positive',
             position: 'center'
           })
         }
+      } catch (error) {
+        console.log(error)
+        Notify.create({
+          type: 'warning',
+          message: 'Esta Empresa esta Asociada A un Proveedor!',
+          color: 'warning',
+          position: 'center'
+        })
       }
+    },
+
+    async updatePersona (params, id) {
+      try {
+        let updateP = await axios.put(
+          Global.url + 'persona/update/' + `${id}`,
+          params,
+          Headers
+        )
+
+        if (updateP.status === 200) {
+          Notify.create({
+            type: 'positive',
+            message: 'Persona Actualizada!',
+            color: 'positive',
+            position: 'bottom-right'
+          })
+        }
+      } catch (error) {
+        console.log(error)
+        Notify.create({
+          type: 'warning',
+          message: 'Error al intentar Actualizar la Persona!',
+          color: 'warning',
+          position: 'center'
+        })
+      }
+    }
   }
 })
