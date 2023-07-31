@@ -87,7 +87,7 @@
                             <q-btn size="14px" :to="{name:'personas'}" flat icon="person_add" label="Persona" no-caps color="primary"></q-btn>
                         </q-item-section>
                         <q-item-section side>
-                            <q-btn size="14px" to="/Cliente" flat icon="person_add" label="Clientes" no-caps color="primary"></q-btn>
+                            <q-btn size="14px" :to="{name:'clientes'}" flat icon="person_add" label="Clientes" no-caps color="primary"></q-btn>
                         </q-item-section>
                         <q-item-section side>
                             <q-btn to="/Proveedor" size="14px" flat icon="person_add" label="Proveedores" color="primary" no-caps></q-btn>

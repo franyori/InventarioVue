@@ -5,48 +5,73 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { Notify } from 'quasar'
 
-export const usePersonaByIdStore = defineStore('personaid', {
+export const useClienteStore = defineStore('cliente', {
   state: () => {
     return {
-      PersonaById: ref([]),
-      Persona: ref([])
+      ClienteId: ref({}),
+      Cliente: ref([])
     }
   },
 
   getters: {},
 
   actions: {
-    async PersonaAll () {
+    async ClienteAll () {
       try {
-        let getAll = await axios.get(Global.url + 'persona/list', Headers)
-        const resp = (this.Persona = getAll.data)
+        let getAll = await axios.get(Global.url + 'cliente/list', Headers)
+        const resp = (this.Cliente = getAll.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async editPersona (req, res) {
+    async ClienteAdd (params) {
       try {
-        let list = await axios.get(
-          Global.url + 'persona/show/' + `${req}`,
+        let add = await axios.post(
+          Global.url + 'cliente/add',
+          params,
           Headers
         )
-        const respu = (this.PersonaById = list.data)
+        if (add.status === 200) {
+          Notify.create({
+            type: 'positive',
+            message: 'Cliente Agregado',
+            color: 'positive'
+          })
+        }
+      } catch (error) {
+        console.log(params)
+        Notify.create({
+          type: 'warning',
+          message: 'Error con el Servidor',
+          color: 'warning',
+          position: 'center'
+        })
+      }
+    },
+
+    async ClienteById (id) {
+      try {
+        let list = await axios.get(
+          Global.url + 'cliente/show/' + `${id}`,
+          Headers
+        )
+        const respu = (this.ClienteId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async deletePersona (req, res) {
+    async ClienteDelete(id) {
       try {
         const lista = await axios.delete(
-          Global.url + 'persona/delete/' + `${req}`,
+          Global.url + 'cliente/delete/' + `${id}`,
           Headers
         )
         if (lista.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Persona Eliminada!',
+            message: 'Cliente Eliminada',
             color: 'positive',
             position: 'center'
           })
@@ -55,17 +80,17 @@ export const usePersonaByIdStore = defineStore('personaid', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Esta Empresa esta Asociada A un Proveedor',
+          message: 'Este Cliente esta Asociado a un Proveedor',
           color: 'warning',
           position: 'center'
         })
       }
     },
 
-    async updatePersona (params, id) {
+    async ClienteUpdate (params, id) {
       try {
         let updateP = await axios.put(
-          Global.url + 'persona/update/' + `${id}`,
+          Global.url + 'cliente/update/' + `${id}`,
           params,
           Headers
         )
@@ -73,7 +98,7 @@ export const usePersonaByIdStore = defineStore('personaid', {
         if (updateP.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Persona Actualizada!',
+            message: 'Cliente Actualizado',
             color: 'positive',
             position: 'bottom-right'
           })
@@ -82,7 +107,7 @@ export const usePersonaByIdStore = defineStore('personaid', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Error al intentar Actualizar la Persona',
+          message: 'Error al intentar Actualizar el Cliente',
           color: 'warning',
           position: 'center'
         })

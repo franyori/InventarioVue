@@ -13,7 +13,7 @@
           <p class="text-subtitle2">Tipo de persona</p>
         </div>
       </div>
-      <q-form @submit.prevent.stop="AddPersona" @reset="onReset()">
+      <q-form @submit.prevent.stop="AddPersona" @reset="onReset">
         <div class="row">
           <div class="col q-pt-none q-pl-md q-pr-md q-pb-md">
             <div class="q-gutter-sm">
@@ -308,9 +308,8 @@ const addPersonaService = new PersonaService()
   const AddPersona = async () => {
   const propss  = ref(params)
   await addPersonaService.addPer(propss.value)
-  onReset()
   instance.proxy.$forceUpdate()
-  
+  onReset()
 };
  
 onUpdated(async () => {
