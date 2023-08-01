@@ -1,6 +1,7 @@
 <template>
   <q-dialog
-    v-model="persistent"
+    v-model="persistente"
+    :model-value="persistent"
     persistent
     transition-show="scale"
     transition-hide="scale"
@@ -14,12 +15,12 @@
         <div class="text-h6">Editar proveedor</div>
       </q-card-section>
       <q-card-section class="q-pt-none">
-        <q-form @submit.prevent="updateProveedor()">
+        <q-form @submit.prevent="updateProveedor(),closeModal()">
           <div class="row q-col-gutter-md q-pb-md">
             <div class="q-gutter-sm">
               <q-radio
                 dense
-                v-model="apiedit.status_prov"
+                v-model="storeProveedor.ProvedorId.status_prov"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="ACTIVO"
@@ -27,7 +28,7 @@
               />
               <q-radio
                 dense
-                v-model="apiedit.status_prov"
+                v-model="storeProveedor.ProvedorId.status_prov"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="INACTIVO"
@@ -44,7 +45,7 @@
                 input-debounce="0"
                 dense
                 filled
-                v-model="apiedit.personaId"
+                v-model="storeProveedor.ProvedorId.personaId"
                 :options="apipersona"
                 :option-label="
                   apipersona =>
@@ -79,7 +80,7 @@
                 dense
                 standout
                 bg-color="accent"
-                v-model="apiedit.empresaId"
+                v-model="storeProveedor.ProvedorId.empresaId"
                 :options="apiempresa"
                 :option-label="
                   apiempresa =>
@@ -110,7 +111,7 @@
               dense
               color="black"
               bg-color="accent"
-              v-model="apiedit.detalle_prov"
+              v-model="storeProveedor.ProvedorId.detalle_prov"
               label="Detalles"
               hint="Escriba algún detalle"
               lazy-rules
@@ -121,9 +122,7 @@
               </template>
             </q-input>
           </div>
-        </q-form>
-      </q-card-section>
-      <q-card-actions align="right">
+          <q-card-actions align="right">
         <q-btn label="Guardar" no-caps type="submit" color="primary" />
         <q-btn
           no-caps
@@ -133,65 +132,44 @@
           @click="closeModal()"
         />
       </q-card-actions>
+        </q-form>
+      </q-card-section>
+     
     </q-card>
   </q-dialog>
 </template>
-<script>
-import { Headers } from '../../../Headers'
-import axios from 'axios'
-import { Global } from '../../Global'
-import { Notify } from 'quasar'
 
-export default {
-  props: {
-    persistent: Boolean,
-    apiedit: '',
-    apipersona: Array,
-    apiempresa: Array
-  },
-  name: 'ModalEdit',
-  data () {
-    return {}
-  },
-  methods: {
-    async updateProveedor (req, res) {
-      let params = {
-        personaId: this.apiedit.personaId,
-        empresaId: this.apiedit.empresaId,
-        status_prov: this.apiedit.status_prov,
-        detalle_prov: this.apiedit.detalle_prov
-      }
-      let persistent = false
-      try {
-        let edit = await axios.put(
-          Global.url + 'proveedor/update/' + `${this.apiedit.id}`,
-          params,
-          Headers
-        )
+<script setup>
+import { usePersonaByIdStore } from '../../stores/PersonaByIdStore'
+import { useEmpresaStore } from '../../stores/EmpresaStore'
+import { computed, ref } from 'vue'
+import { useProveedorStore } from '../../stores/ProveedorStore'
 
-        if (edit.status === 200) {
-          this.$emit('closeModel', persistent)
-          Notify.create({
-            type: 'positive',
-            message: 'Proveedor actualizado!',
-            color: 'positive',
-            position: 'bottom-right'
-          })
-        }
-      } catch (error) {
-        console.log(error)
-        Notify.create({
-          type: 'warning',
-          message: 'Error al intentar actualizar el proveedor!',
-          color: 'warning',
-          position: 'center'
-        })
-      }
-    },
-    closeModal () {
-      let persistent = false
-      this.$emit('closeModel', persistent)
-    }
-  }
+const storePersona = usePersonaByIdStore()
+const storeEmpresa = useEmpresaStore()
+const storeProveedor = useProveedorStore()
+
+const persistente = ref('')
+const apipersona = computed(() => storePersona.Persona)
+const apiempresa = computed(() => storeEmpresa.Empresa)
+const props = defineProps({
+  persistent: Boolean
+})
+
+const emit = defineEmits(['closeModel'])
+
+const updateProveedor = async () => {
+  const params = ref({
+    personaId: storeProveedor.ProvedorId.personaId,
+    empresaId: storeProveedor.ProvedorId.empresaId,
+    status_prov: storeProveedor.ProvedorId.status_prov,
+    detalle_prov: storeProveedor.ProvedorId.detalle_prov
+  })
+  const id = ref(storeProveedor.ProvedorId.id)
+  await storeProveedor.ProveedorUpdate(params.value, id.value)
+}
+
+const closeModal = () => {
+  emit('closeModel', false)
 }
 </script>

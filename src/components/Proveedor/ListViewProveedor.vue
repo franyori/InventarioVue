@@ -3,14 +3,13 @@
     <q-card>
       <q-card-section class="q-pa-none">
         <q-table
-          :rows="datapi"
+          :rows="storeProveedor.Proveedor"
           :columns="columns"
           :row-key="row => row.id"
           dense
           :filter="filter"
           :pagination="initialPagination"
           class="text-center box-shadow"
-
         >
           <template v-slot:top-left>
             <q-input
@@ -47,26 +46,27 @@
                 size="xs"
                 color="primary"
                 class="q-ma-none"
-                @click="props.row.id;"
+                @click="ProveedorDelete(props.row.id)"
               />
             </q-td>
           </template>
         </q-table>
       </q-card-section>
     </q-card>
-    <!-- <ModalEdit
-      :persistent="persistent"
-      :apiedit="this.editApi"
-      :apipersona="this.apipersona"
-      :apiempresa="this.apiempresa"
-      @closeModel="persistent = $event"
-    >
-    </ModalEdit> -->
+    <ModalEdit :persistent="persistent" @closeModel="persistent = false">
+    </ModalEdit>
   </div>
 </template>
 
-<script>
-//import ModalEdit from './ModalEdit.vue'
+<script setup>
+import { onUpdated, ref } from 'vue'
+import { useProveedorStore } from '../../stores/ProveedorStore'
+import { getCurrentInstance } from 'vue'
+import ModalEdit from '../../components/Proveedor/ModalProveedor.vue'
+
+const instance = getCurrentInstance()
+const storeProveedor = useProveedorStore()
+
 const columns = [
   {
     name: 'Empresa.rif_empre',
@@ -74,7 +74,7 @@ const columns = [
     label: 'Rif empresa',
     align: 'center',
     field: row => row.Empresa.rif_empre,
-    format: val => `${val}`,
+    format: val => `${val}`
   },
 
   {
@@ -108,22 +108,31 @@ const columns = [
   }
 ]
 
+const persistent = ref(false)
 
-      persistent: false,
-      initialPagination: {
-        sortBy: 'desc',
-        descending: false,
-        page: 1,
-        rowsPerPage: 10
-        // rowsNumber: xx if getting data from a server
-      }
-     
-      filter: '',
-      editApi: {}
-  
-    openModal () {
-      this.persistent = true
-    }
-  props: ['datapi', 'apipersona','apiempresa']
+const initialPagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 10
+})
 
+const filter = ref('')
+
+const ProveedorDelete = async id => {
+  await storeProveedor.ProveedorDelete(id)
+  instance.proxy.$forceUpdate()
+}
+
+const editProveedor = async id => {
+  await storeProveedor.ProveedorById(id)
+}
+
+onUpdated(async () => {
+  await storeProveedor.ProveedorAll()
+})
+
+const openModal = () => {
+  persistent.value = true
+}
 </script>

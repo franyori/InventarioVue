@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="fondo">
     <div class="row">
       <div class="col-12 q-ml-md q-mt-md text-bold text-primary text-h5">
         Personas

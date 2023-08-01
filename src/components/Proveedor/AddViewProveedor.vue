@@ -1,9 +1,6 @@
 <template>
   <div class="col col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 q-pa-md">
-    <q-card
-      class="q-pa-md box-shadow"
-
-    >
+    <q-card class="q-pa-md box-shadow">
       <div class="row">
         <div class="col col-md-12 col-lg-12 col-xs-12 col-sm-12">
           <q-card-section>
@@ -18,7 +15,7 @@
         </div>
       </div>
 
-      <q-form @submit.prevent="addProveedor()" @reset="onReset">
+      <q-form @submit.prevent="AddProveedor()" @reset="onReset">
         <div class="row">
           <div class="col q-pt-none q-pl-md q-pr-md q-pb-md">
             <div class="q-gutter-sm">
@@ -54,22 +51,21 @@
               filled
               v-model="persona"
               :options="apipersona"
+              label="Persona"
               :option-label="
                 apipersona =>
                   apipersona === null
                     ? null
-                    : apipersona.nombres_per + ' ' + apipersona.apellidos_per
+                    : apipersona.nombres_per + apipersona.apellidos_per
               "
               :option-value="
                 apipersona => (apipersona === null ? null : apipersona.id)
               "
-              @filter="filterFn"
               emit-value
               map-options
               standout
               bg-color="accent"
-              label="Persona"
-              hint="Seleccione persona"
+              hint="Seleccione Persona"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="person" />
@@ -93,9 +89,7 @@
               :options="apiempresa"
               :option-label="
                 apiempresa =>
-                  apiempresa === null
-                    ? null
-                    : apiempresa.nombre_empre + '  Rif:' + apiempresa.rif_empre
+                  apiempresa === null ? null : apiempresa.nombre_empre
               "
               :option-value="
                 apiempresa => (apiempresa === null ? null : apiempresa.id)
@@ -117,16 +111,13 @@
         <div class="col-12 q-pr-md q-pt-md">
           <q-input
             dense
-            standout="bg-teal text-blue"
             color="black"
             bg-color="accent"
             v-model="detalle"
             label="Detalle"
             hint="Escriba algún detalle"
             lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Detalle no valido'
-            ]"
+            :rules="[val => (val && val.length > 0) || 'Detalle no valido']"
           >
             <template v-slot:prepend>
               <q-icon color="primary" name="draw" />
@@ -136,7 +127,8 @@
 
         <div class="col-12 q-pt-md">
           <q-btn label="Guardar" no-caps type="submit" color="primary" />
-          <q-btn no-caps
+          <q-btn
+            no-caps
             label="Limpiar"
             type="reset"
             color="primary"
@@ -148,95 +140,44 @@
     </q-card>
   </div>
 </template>
-<script>
-import { Headers } from '../../../Headers'
-import axios from 'axios'
-import { Global } from '../../Global'
-import { Notify } from 'quasar'
-export default {
-  name: 'Add',
-  props: ['apiempresa', 'apipersona'],
+<script setup>
+import { computed, ref, onUpdated } from 'vue'
+import { usePersonaByIdStore } from '../../stores/PersonaByIdStore'
+import { useEmpresaStore } from '../../stores/EmpresaStore'
+import { useProveedorStore } from '../../stores/ProveedorStore'
+import { getCurrentInstance } from 'vue'
 
-  data () {
-    return {
-      shape: 'ACTIVO',
-      persona: null,
-      empresa: null,
-      detalle: null
-    }
-  },
-  methods: {
-    onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning'
-        })
-      } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }
-    },
+const instance = getCurrentInstance()
+const storePersona = usePersonaByIdStore()
+const storeEmpresa = useEmpresaStore()
+const storeProveedor = useProveedorStore()
 
-    onReset () {
-      this.persona = null
-      this.empresa = null
-      this.detalle = null
-    },
-    filterFn (val, update) {
-      if (val === '') {
-        update(() => {
-          this.options = this.apipersona
-        })
-        return
-      }
+const apiempresa = computed(() => storeEmpresa.Empresa)
+const apipersona = computed(() => storePersona.Persona)
+const shape = ref('ACTIVO')
+const persona = ref('')
+const empresa = ref('')
+const detalle = ref('')
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.options = this.apipersona.filter(
-          v => v.toLowerCase().indexOf(needle) > -1
-        )
-      })
-    },
+const AddProveedor = async () => {
+  const params = ref({
+    personaId: persona,
+    empresaId: empresa,
+    status_prov: shape,
+    detalle_prov: detalle
+  })
+  await storeProveedor.ProveedorAdd(params.value)
+  instance.proxy.$forceUpdate()
 
-    async addProveedor (req, res) {
-      let params = {
-        personaId: this.persona,
-        empresaId: this.empresa,
-        status_prov: this.shape,
-        detalle_prov: this.detalle
-      }
-
-      try {
-        const add = await axios.post(
-          Global.url + 'proveedor/add',
-          params,
-          Headers
-        )
-        if (add.status === 200) {
-          Notify.create({
-            type: 'positive',
-            message: 'Proveedor Agregado',
-            color: 'positive',
-            position: 'bottom-right'
-          })
-          this.onReset()
-        }
-      } catch (error) {
-        console.log(error)
-        Notify.create({
-          type: 'warning',
-          message: 'Error con el Servidor!',
-          color: 'warning',
-          position: 'center'
-        })
-      }
-    }
-  }
 }
+
+onUpdated(async () => {
+await storeProveedor.ProveedorAll()
+})
+
+const onReset = () => {
+  persona.value = null
+  empresa.value = null
+  detalle.value = null
+};
 </script>

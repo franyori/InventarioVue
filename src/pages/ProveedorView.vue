@@ -16,6 +16,21 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import List from '../components/Proveedor/ListViewProveedor.vue'
-//import Add from '../components/Proveedor/Add.vue'
+import Add from '../components/Proveedor/AddViewProveedor.vue'
+import {useProveedorStore} from '../stores/ProveedorStore'
+import {usePersonaByIdStore} from '../stores/PersonaByIdStore'
+import { useEmpresaStore } from '../stores/EmpresaStore'
+
+const storePersona = usePersonaByIdStore()
+const store = useProveedorStore()
+const storeEmpresa = useEmpresaStore()
+
+onMounted(async()=>{
+await store.ProveedorAll()
+await storePersona.PersonaAll()
+await storeEmpresa.EmpresaAll()
+});
+
 </script>
