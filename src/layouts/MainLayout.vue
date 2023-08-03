@@ -98,7 +98,7 @@
                     <q-expansion-item :content-inset-level="0.5" expand-separator icon="payments" label="Definición" no-caps>
                         <q-expansion-item expand-separator :content-inset-level="0.5" icon="receipt" label="Categorias">
                             <q-item-section side>
-                                <q-btn label="Agregar" to="/Categoria" size="md" flat icon="add" no-caps color="primary"></q-btn>
+                                <q-btn label="Agregar" :to="{name:'categorias'}" size="md" flat icon="add" no-caps color="primary"></q-btn>
                             </q-item-section>
                         </q-expansion-item>
                         <q-expansion-item expand-separator :content-inset-level="0.5" icon="receipt" label="Empresas">
