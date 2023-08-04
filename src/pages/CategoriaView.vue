@@ -1,4 +1,5 @@
 <template>
+    <q-page class="fondo">
   <div class="row">
     <div class="col-12">
       <p class="text-bold text-primary text-h5 q-pt-lg q-pl-lg">
@@ -7,15 +8,16 @@
     </div>
   </div>
   <div class="row">
-    <List />
-    <Add />
+    <ListCategoria />
+    <AddCategoria />
   </div>
+</q-page>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import List from '../components/Categorias/ListCategoriaView.vue'
-import Add from '../components/Categorias/AddCategoriaView.vue'
+import ListCategoria from '../components/Categorias/ListCategoriaView.vue'
+import AddCategoria from '../components/Categorias/AddCategoriaView.vue'
 import {useCategoriaStore} from '../stores/CategoriaStore'
 
 const storeCategoria = useCategoriaStore()

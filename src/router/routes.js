@@ -18,6 +18,8 @@ const routes = [
       { path: 'Cliente', name:'clientes', component: () => import('../pages/ClienteView.vue'),meta: { requiresAuth: false } },
       { path: 'Proveedor', name:'proveedores', component: () => import('../pages/ProveedorView.vue'),meta: { requiresAuth: false } },
       { path: 'Categoria', name:'categorias', component: () => import('../pages/CategoriaView.vue'),meta: { requiresAuth: false } },
+      { path: 'Rol', name:'roles', component: () => import('../pages/RolView.vue'),meta: { requiresAuth: false } },
+
 
 
 
