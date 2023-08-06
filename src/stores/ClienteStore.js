@@ -18,7 +18,15 @@ export const useClienteStore = defineStore('cliente', {
   actions: {
     async ClienteAll () {
       try {
-        let getAll = await axios.get(Global.url + 'cliente/list', Headers)
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let getAll = await axios.get(Global.url + 'cliente/list', {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const resp = (this.Cliente = getAll.data)
       } catch (error) {
         console.log(error)
@@ -27,11 +35,15 @@ export const useClienteStore = defineStore('cliente', {
 
     async ClienteAdd (params) {
       try {
-        let add = await axios.post(
-          Global.url + 'cliente/add',
-          params,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let add = await axios.post(Global.url + 'cliente/add', params, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
@@ -52,21 +64,34 @@ export const useClienteStore = defineStore('cliente', {
 
     async ClienteById (id) {
       try {
-        let list = await axios.get(
-          Global.url + 'cliente/show/' + `${id}`,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let list = await axios.get(Global.url + 'cliente/show/' + `${id}`, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const respu = (this.ClienteId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async ClienteDelete(id) {
+    async ClienteDelete (id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
           Global.url + 'cliente/delete/' + `${id}`,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
         if (lista.status === 200) {
           Notify.create({
@@ -89,10 +114,18 @@ export const useClienteStore = defineStore('cliente', {
 
     async ClienteUpdate (params, id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
           Global.url + 'cliente/update/' + `${id}`,
           params,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
 
         if (updateP.status === 200) {

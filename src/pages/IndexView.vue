@@ -1,24 +1,22 @@
 <template>
   <q-page class="flex flex-center">  
-  <div class="q-pl-xl q-pr-xl q-pb-xl bg-blue-2" style="border-radius: 8px; width: 30vw;">
+  <div class="q-pl-xl q-pr-xl q-pb-xl bg-light-blue-2" style="border-radius: 8px; width: 30vw; ">
     <p class="text-h6 text-center q-pa-md text-primary">Acceso</p>
-    <form @submit.prevent.stop="onSubmit" @reset.prevent.stop="onReset" class="q-gutter-md">
+    <form @submit.prevent.stop="Login" @reset.prevent.stop="onReset" class="q-gutter-md">
       <q-input
-        ref="email"
         standout
         dense
-        type="email"
+        type="text"
         bg-color="grey-2"
         input-class="text-black"
-        v-model="email"
-        label="Correo *"
-        hint="Correo"
+        v-model="usuario"
+        label="Usuario *"
+        hint="Usuario"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Por favor escriba su correo']"
+        :rules="[ val => val && val.length > 0 || 'Por favor escriba su usuario']"
       />
 
       <q-input
-        ref="pass"
         standout
         type="password"
         dense
@@ -41,7 +39,26 @@
 </template>
 
 <script setup>
-import { Notify } from 'quasar'
+import { useUsuarioStore } from '../stores/UsuarioStore'
+import { ref } from 'vue';
+import {useRouter} from 'vue-router'
 
+const router = useRouter()
+const store = useUsuarioStore()
+
+const loading = ref(false)
+const usuario = ref('')
+const password = ref('')
+
+const Login = (async()=>{
+  loading.value = true
+  const params = ref({
+    usuario: usuario,
+    password: password,
+  
+      })
+await store.UsuarioLogin(params.value).then(()=> router.push("/IndexPage"))
+  loading.value = false
+})
 
 </script>

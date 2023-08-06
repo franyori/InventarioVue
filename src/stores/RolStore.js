@@ -18,7 +18,15 @@ export const useRolStore = defineStore('rol', {
   actions: {
     async RolAll () {
       try {
-        let getAll = await axios.get(Global.url + 'rol/list', Headers)
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let getAll = await axios.get(Global.url + 'rol/list', {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const resp = (this.Rol = getAll.data)
       } catch (error) {
         console.log(error)
@@ -27,11 +35,15 @@ export const useRolStore = defineStore('rol', {
 
     async RolAdd (params) {
       try {
-        let add = await axios.post(
-          Global.url + 'rol/add',
-          params,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let add = await axios.post(Global.url + 'rol/add', params, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
@@ -52,21 +64,34 @@ export const useRolStore = defineStore('rol', {
 
     async RolById (id) {
       try {
-        let list = await axios.get(
-          Global.url + 'rol/show/' + `${id}`,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let list = await axios.get(Global.url + 'rol/show/' + `${id}`, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const respu = (this.RolId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async CategoriaDelete(id) {
+    async CategoriaDelete (id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
           Global.url + 'categoria/delete/' + `${id}`,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
         if (lista.status === 200) {
           Notify.create({
@@ -89,10 +114,18 @@ export const useRolStore = defineStore('rol', {
 
     async RolUpdate (params, id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
           Global.url + 'rol/update/' + `${id}`,
           params,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
 
         if (updateP.status === 200) {

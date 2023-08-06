@@ -18,7 +18,15 @@ export const usePersonaByIdStore = defineStore('personaid', {
   actions: {
     async PersonaAll () {
       try {
-        let getAll = await axios.get(Global.url + 'persona/list', Headers)
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let getAll = await axios.get(Global.url + 'persona/list', {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const resp = (this.Persona = getAll.data)
       } catch (error) {
         console.log(error)
@@ -27,10 +35,15 @@ export const usePersonaByIdStore = defineStore('personaid', {
 
     async editPersona (req, res) {
       try {
-        let list = await axios.get(
-          Global.url + 'persona/show/' + `${req}`,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let list = await axios.get(Global.url + 'persona/show/' + `${req}`, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const respu = (this.PersonaById = list.data)
       } catch (error) {
         console.log(error)
@@ -39,9 +52,17 @@ export const usePersonaByIdStore = defineStore('personaid', {
 
     async deletePersona (req, res) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
           Global.url + 'persona/delete/' + `${req}`,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
         if (lista.status === 200) {
           Notify.create({
@@ -64,12 +85,19 @@ export const usePersonaByIdStore = defineStore('personaid', {
 
     async updatePersona (params, id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
           Global.url + 'persona/update/' + `${id}`,
           params,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
-
         if (updateP.status === 200) {
           Notify.create({
             type: 'positive',

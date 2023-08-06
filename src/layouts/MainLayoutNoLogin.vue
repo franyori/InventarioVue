@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title class="text-center">
-          Sistema de Inventario Master
+          BambúStock
         </q-toolbar-title>
 
         <div>v 1</div>

@@ -8,21 +8,17 @@ export default route(function (/* { store, ssrContext } */) {
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
 
-  const Router = createRouter({
+   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
   Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token") && localStorage.getItem("usuario")) {
         next();
       } else {
-        next("/login");
+        next("/");
         Notify.create({ message: 'Debes iniciar sesión para acceder a esta sección de la aplicación', type: 'negative', color: 'red-8', position: 'top-right'})
 
       }

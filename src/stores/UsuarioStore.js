@@ -2,42 +2,43 @@ import { defineStore } from 'pinia'
 import { Global } from 'src/config/Global'
 import { Headers } from 'src/config/Headers'
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import { Notify } from 'quasar'
 
-export const useEmpresaStore = defineStore('empresa', {
+export const useUsuarioStore = defineStore('usuario', {
   state: () => {
     return {
-      ClienteId: ref({}),
-      Empresa: ref([])
+      UsuarioId: ref({}),
+      Usuario: ref([]),
+      Token: ref(''),
+      UsuarioToken: ref('')
     }
   },
-
   getters: {},
 
   actions: {
-    async EmpresaAll () {
+    async UsuarioAll () {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let getAll = await axios.get(Global.url + 'empresa/list', {
+        let getAll = await axios.get(Global.url + 'usuario/list', {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
             Authorization: 'Bearer ' + newToken
           }
         })
-        const resp = (this.Empresa = getAll.data)
+        const resp = (this.Usuario = getAll.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async ClienteAdd (params) {
+    async UsuarioAdd (params) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let add = await axios.post(Global.url + 'cliente/add', params, {
+        let add = await axios.post(Global.url + 'usuario/add', params, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
@@ -47,7 +48,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Agregado',
+            message: 'Usuario agregado',
             color: 'positive'
           })
         }
@@ -61,30 +62,55 @@ export const useEmpresaStore = defineStore('empresa', {
         })
       }
     },
+    async UsuarioLogin (params) {
+      try {
+        let add = await axios.post(Global.url + 'auth/auth', params, Headers)
+        if (add.status === 200) {
+          localStorage.setItem('token', add.data.accesToken)
+          this.Token = localStorage.getItem('token')
+          localStorage.setItem('usuario', add.data.usuarioToken)
+          this.UsuarioToken = localStorage.getItem('usuario')
 
-    async ClienteById (id) {
+          Notify.create({
+            type: 'positive',
+            message: 'Inicio de sesión exitoso',
+            color: 'positive',
+            position: 'top-right'
+          })
+        }
+      } catch (error) {
+        Notify.create({
+          type: 'warning',
+          message: 'Error con el Servidor',
+          color: 'warning',
+          position: 'center'
+        })
+      }
+    },
+
+    async UsuarioById (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let list = await axios.get(Global.url + 'cliente/show/' + `${id}`, {
+        let list = await axios.get(Global.url + 'usuario/show/' + `${id}`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
             Authorization: 'Bearer ' + newToken
           }
         })
-        const respu = (this.ClienteId = list.data)
+        const respu = (this.UsuarioId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async ClienteDelete (id) {
+    async UsuarioDelete (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
-          Global.url + 'cliente/delete/' + `${id}`,
+          Global.url + 'usuario/delete/' + `${id}`,
           {
             headers: {
               'Access-Control-Allow-Origin': '*',
@@ -96,7 +122,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (lista.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Eliminada',
+            message: 'Usuario Eliminado',
             color: 'positive',
             position: 'center'
           })
@@ -105,19 +131,19 @@ export const useEmpresaStore = defineStore('empresa', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Este Cliente esta Asociado a un Proveedor',
+          message: 'Error al intentar eliminar el usuario',
           color: 'warning',
           position: 'center'
         })
       }
     },
 
-    async ClienteUpdate (params, id) {
+    async RolUpdate (params, id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
-          Global.url + 'cliente/update/' + `${id}`,
+          Global.url + 'rol/update/' + `${id}`,
           params,
           {
             headers: {
@@ -131,7 +157,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (updateP.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Actualizado',
+            message: 'Rol actualizado',
             color: 'positive',
             position: 'bottom-right'
           })
@@ -140,7 +166,7 @@ export const useEmpresaStore = defineStore('empresa', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Error al intentar Actualizar el Cliente',
+          message: 'Error al intentar actualizar la categoria',
           color: 'warning',
           position: 'center'
         })

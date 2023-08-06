@@ -18,7 +18,15 @@ export const useProveedorStore = defineStore('proveedor', {
   actions: {
     async ProveedorAll () {
       try {
-        let getAll = await axios.get(Global.url + 'proveedor/list', Headers)
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let getAll = await axios.get(Global.url + 'proveedor/list', {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const resp = (this.Proveedor = getAll.data)
       } catch (error) {
         console.log(error)
@@ -27,11 +35,15 @@ export const useProveedorStore = defineStore('proveedor', {
 
     async ProveedorAdd (params) {
       try {
-        let add = await axios.post(
-          Global.url + 'proveedor/add',
-          params,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let add = await axios.post(Global.url + 'proveedor/add', params, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
@@ -52,21 +64,34 @@ export const useProveedorStore = defineStore('proveedor', {
 
     async ProveedorById (id) {
       try {
-        let list = await axios.get(
-          Global.url + 'proveedor/show/' + `${id}`,
-          Headers
-        )
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
+        let list = await axios.get(Global.url + 'proveedor/show/' + `${id}`, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'Application/json',
+            Authorization: 'Bearer ' + newToken
+          }
+        })
         const respu = (this.ProvedorId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async ProveedorDelete(id) {
+    async ProveedorDelete (id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
           Global.url + 'proveedor/delete/' + `${id}`,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
         if (lista.status === 200) {
           Notify.create({
@@ -89,10 +114,18 @@ export const useProveedorStore = defineStore('proveedor', {
 
     async ProveedorUpdate (params, id) {
       try {
+        var token = localStorage.getItem('token') || ''
+        const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
           Global.url + 'proveedor/update/' + `${id}`,
           params,
-          Headers
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'Application/json',
+              Authorization: 'Bearer ' + newToken
+            }
+          }
         )
 
         if (updateP.status === 200) {

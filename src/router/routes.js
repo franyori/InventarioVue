@@ -13,16 +13,13 @@ const routes = [
     path: '/IndexPage',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/', component: () => import('pages/IndexPage.vue') },
-      { path: 'Persona', name:'personas', component: () => import('../pages/PersonaView.vue'),meta: { requiresAuth: false } },
-      { path: 'Cliente', name:'clientes', component: () => import('../pages/ClienteView.vue'),meta: { requiresAuth: false } },
-      { path: 'Proveedor', name:'proveedores', component: () => import('../pages/ProveedorView.vue'),meta: { requiresAuth: false } },
-      { path: 'Categoria', name:'categorias', component: () => import('../pages/CategoriaView.vue'),meta: { requiresAuth: false } },
-      { path: 'Rol', name:'roles', component: () => import('../pages/RolView.vue'),meta: { requiresAuth: false } },
-
-
-
-
+      { path: '/', component: () => import('pages/IndexPage.vue'), meta: { requiresAuth: true }},
+      { path: 'Persona', name:'personas', component: () => import('../pages/PersonaView.vue'),meta: { requiresAuth: true } },
+      { path: 'Cliente', name:'clientes', component: () => import('../pages/ClienteView.vue'),meta: { requiresAuth: true } },
+      { path: 'Proveedor', name:'proveedores', component: () => import('../pages/ProveedorView.vue'),meta: { requiresAuth: true } },
+      { path: 'Categoria', name:'categorias', component: () => import('../pages/CategoriaView.vue'),meta: { requiresAuth: true } },
+      { path: 'Rol', name:'roles', component: () => import('../pages/RolView.vue'),meta: { requiresAuth: true } },
+      { path: 'Usuario', name:'usuarios', component: () => import('../pages/UsuarioView.vue'),meta: { requiresAuth: true } },
 
     ]
   },
