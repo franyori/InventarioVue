@@ -20,6 +20,7 @@ const routes = [
       { path: 'Categoria', name:'categorias', component: () => import('../pages/CategoriaView.vue'),meta: { requiresAuth: true } },
       { path: 'Rol', name:'roles', component: () => import('../pages/RolView.vue'),meta: { requiresAuth: true } },
       { path: 'Usuario', name:'usuarios', component: () => import('../pages/UsuarioView.vue'),meta: { requiresAuth: true } },
+      { path: 'Empresa', name:'empresas', component: () => import('../pages/EmpresaView.vue'),meta: { requiresAuth: true } },
 
     ]
   },

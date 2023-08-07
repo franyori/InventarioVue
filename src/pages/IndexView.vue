@@ -60,5 +60,9 @@ const Login = (async()=>{
 await store.UsuarioLogin(params.value).then(()=> router.push("/IndexPage"))
   loading.value = false
 })
-
+const onReset = () =>{
+usuario.value = null
+password.value = null
+     
+    }
 </script>

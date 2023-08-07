@@ -8,7 +8,7 @@ import { Notify } from 'quasar'
 export const useEmpresaStore = defineStore('empresa', {
   state: () => {
     return {
-      ClienteId: ref({}),
+      EmpresaId: ref({}),
       Empresa: ref([])
     }
   },
@@ -33,11 +33,11 @@ export const useEmpresaStore = defineStore('empresa', {
       }
     },
 
-    async ClienteAdd (params) {
+    async EmpresaAdd (params) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let add = await axios.post(Global.url + 'cliente/add', params, {
+        let add = await axios.post(Global.url + 'empresa/add', params, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
@@ -47,7 +47,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Agregado',
+            message: 'Empresa Agregada',
             color: 'positive'
           })
         }
@@ -62,29 +62,29 @@ export const useEmpresaStore = defineStore('empresa', {
       }
     },
 
-    async ClienteById (id) {
+    async EmpresaById (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let list = await axios.get(Global.url + 'cliente/show/' + `${id}`, {
+        let list = await axios.get(Global.url + 'empresa/show/' + `${id}`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
             Authorization: 'Bearer ' + newToken
           }
         })
-        const respu = (this.ClienteId = list.data)
+        const respu = (this.EmpresaId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async ClienteDelete (id) {
+    async EmpresaDelete (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
-          Global.url + 'cliente/delete/' + `${id}`,
+          Global.url + 'empresa/delete/' + `${id}`,
           {
             headers: {
               'Access-Control-Allow-Origin': '*',
@@ -96,7 +96,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (lista.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Eliminada',
+            message: 'Empresa Eliminada',
             color: 'positive',
             position: 'center'
           })
@@ -105,19 +105,19 @@ export const useEmpresaStore = defineStore('empresa', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Este Cliente esta Asociado a un Proveedor',
+          message: 'Error al intentar eliminar empresa',
           color: 'warning',
           position: 'center'
         })
       }
     },
 
-    async ClienteUpdate (params, id) {
+    async EmpresaUpdate (params, id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
-          Global.url + 'cliente/update/' + `${id}`,
+          Global.url + 'empresa/update/' + `${id}`,
           params,
           {
             headers: {
@@ -131,7 +131,7 @@ export const useEmpresaStore = defineStore('empresa', {
         if (updateP.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Cliente Actualizado',
+            message: 'Empresa Actualizada',
             color: 'positive',
             position: 'bottom-right'
           })
@@ -140,7 +140,7 @@ export const useEmpresaStore = defineStore('empresa', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Error al intentar Actualizar el Cliente',
+          message: 'Error al intentar Actualizar la empresa',
           color: 'warning',
           position: 'center'
         })
