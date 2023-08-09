@@ -21,6 +21,7 @@ const routes = [
       { path: 'Rol', name:'roles', component: () => import('../pages/RolView.vue'),meta: { requiresAuth: true } },
       { path: 'Usuario', name:'usuarios', component: () => import('../pages/UsuarioView.vue'),meta: { requiresAuth: true } },
       { path: 'Empresa', name:'empresas', component: () => import('../pages/EmpresaView.vue'),meta: { requiresAuth: true } },
+      { path: 'Almacen', name:'almacens', component: () => import('../pages/AlmacenView.vue'),meta: { requiresAuth: true } },
 
     ]
   },

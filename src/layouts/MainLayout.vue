@@ -106,9 +106,9 @@
                                 <q-btn label="Agregar" :to="{name:'empresas'}" size="md" flat icon="add" no-caps color="primary"></q-btn>
                             </q-item-section>
                         </q-expansion-item>
-                        <q-expansion-item :content-inset-level="0.5" expand-separator icon="schedule" label="Bodegas">
+                        <q-expansion-item :content-inset-level="0.5" expand-separator icon="schedule" label="Almacen">
                             <q-item-section side>
-                                <q-btn size="md" flat icon="add" color="primary" no-caps to="/Almacen" label="Agregar">
+                                <q-btn size="md" flat icon="add" color="primary" no-caps :to="{name:'almacens'}" label="Agregar">
                                 </q-btn>
                             </q-item-section>
                         </q-expansion-item>
