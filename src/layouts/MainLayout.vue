@@ -114,7 +114,7 @@
                         </q-expansion-item>
                         <q-expansion-item :content-inset-level="0.5" expand-separator icon="schedule" label="Unidad de Medidad">
                             <q-item-section side>
-                                <q-btn size="md" flat icon="add" color="primary" no-caps to="/UnidadMedidad" label="Agregar">
+                                <q-btn size="md" flat icon="add" color="primary" no-caps :to="{name:'medida'}" label="Agregar">
                                 </q-btn>
                             </q-item-section>
                         </q-expansion-item>
