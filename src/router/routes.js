@@ -23,6 +23,7 @@ const routes = [
       { path: 'Empresa', name:'empresas', component: () => import('../pages/EmpresaView.vue'),meta: { requiresAuth: true } },
       { path: 'Almacen', name:'almacens', component: () => import('../pages/AlmacenView.vue'),meta: { requiresAuth: true } },
       { path: 'UnidadMedida', name:'medida', component: () => import('../pages/UnidadMedidadView.vue'),meta: { requiresAuth: true } },
+      { path: 'PresentacionProd', name:'presentaciones', component: () => import('../pages/PresentacionProdView.vue'),meta: { requiresAuth: true } },
 
     ]
   },
