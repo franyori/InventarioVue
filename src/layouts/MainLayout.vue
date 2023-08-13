@@ -126,7 +126,7 @@
                         </q-expansion-item>
                         <q-expansion-item :content-inset-level="0.5" expand-separator icon="schedule" label="Producto">
                             <q-item-section side>
-                                <q-btn size="md" flat icon="add" color="primary" no-caps to="/Producto" label="Agregar">
+                                <q-btn size="md" flat icon="add" color="primary" no-caps :to="{name:'productos'}" label="Agregar">
                                 </q-btn>
                             </q-item-section>
                         </q-expansion-item>

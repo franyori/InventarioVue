@@ -24,6 +24,8 @@ const routes = [
       { path: 'Almacen', name:'almacens', component: () => import('../pages/AlmacenView.vue'),meta: { requiresAuth: true } },
       { path: 'UnidadMedida', name:'medida', component: () => import('../pages/UnidadMedidadView.vue'),meta: { requiresAuth: true } },
       { path: 'PresentacionProd', name:'presentaciones', component: () => import('../pages/PresentacionProdView.vue'),meta: { requiresAuth: true } },
+      { path: 'Producto', name:'productos', component: () => import('../pages/ProductoView.vue'),meta: { requiresAuth: true } },
+      { path: 'ProductoEdit/:id', name:'productoedit', component: () => import('../pages/ProductoEditView.vue'),meta: { requiresAuth: true } },
 
     ]
   },

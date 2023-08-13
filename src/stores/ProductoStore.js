@@ -4,41 +4,39 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { Notify } from 'quasar'
 
-export const useAlmacenStore = defineStore('almacen', {
+export const useProductoStore = defineStore('producto', {
   state: () => {
     return {
-      AlmacenId: ref({}),
-      Almacen: ref([]),
-      AlmacenProductoId: ref({}),
-
+      ProductoId: ref({}),
+      Producto: ref([])
     }
   },
 
   getters: {},
 
   actions: {
-    async AlmacenAll () {
+    async ProductoAll () {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let getAll = await axios.get(Global.url + 'bodega/list', {
+        let getAll = await axios.get(Global.url + 'producto/list', {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
             Authorization: 'Bearer ' + newToken
           }
         })
-        const resp = (this.Almacen = getAll.data)
+        const resp = (this.Producto = getAll.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async AlmacenAdd (params) {
+    async ProductoAdd (params) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let add = await axios.post(Global.url + 'bodega/add', params, {
+        let add = await axios.post(Global.url + 'producto/add', params, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
@@ -48,7 +46,7 @@ export const useAlmacenStore = defineStore('almacen', {
         if (add.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Almacen Agregado',
+            message: 'Producto agregado',
             color: 'positive'
           })
         }
@@ -63,46 +61,29 @@ export const useAlmacenStore = defineStore('almacen', {
       }
     },
 
-    async AlmacenById (id) {
+    async ProductoById (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
-        let list = await axios.get(Global.url + 'bodega/show/' + `${id}`, {
+        let list = await axios.get(Global.url + 'producto/show/' + `${id}`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'Application/json',
             Authorization: 'Bearer ' + newToken
           }
         })
-        const respu = (this.AlmacenId = list.data)
+        const respu = (this.ProductoId = list.data)
       } catch (error) {
         console.log(error)
       }
     },
 
-    async AlmacenByIdProducto (id) {
-      try {
-        var token = localStorage.getItem('token') || ''
-        const newToken = token.replace('"', ' ')
-        let list = await axios.get(Global.url + 'stock/showId/' + `${id}`, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'Application/json',
-            Authorization: 'Bearer ' + newToken
-          }
-        })
-        const respu = (this.AlmacenProductoId = list.data)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-
-    async AlmacenDelete (id) {
+    async ProductoDelete (id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         const lista = await axios.delete(
-          Global.url + 'bodega/delete/' + `${id}`,
+          Global.url + 'producto/delete/' + `${id}`,
           {
             headers: {
               'Access-Control-Allow-Origin': '*',
@@ -114,7 +95,7 @@ export const useAlmacenStore = defineStore('almacen', {
         if (lista.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Almacen Eliminada',
+            message: 'Producto Eliminado',
             color: 'positive',
             position: 'center'
           })
@@ -123,19 +104,19 @@ export const useAlmacenStore = defineStore('almacen', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Error al intentar eliminar  el Almacen',
+          message: 'Error al intentar eliminar el producto',
           color: 'warning',
           position: 'center'
         })
       }
     },
 
-    async AlmacenUpdate (params, id) {
+    async ProductoUpdate (params, id) {
       try {
         var token = localStorage.getItem('token') || ''
         const newToken = token.replace('"', ' ')
         let updateP = await axios.put(
-          Global.url + 'bodega/update/' + `${id}`,
+          Global.url + 'producto/update/' + `${id}`,
           params,
           {
             headers: {
@@ -149,7 +130,7 @@ export const useAlmacenStore = defineStore('almacen', {
         if (updateP.status === 200) {
           Notify.create({
             type: 'positive',
-            message: 'Almacen Actualizado',
+            message: 'Producto actualizado',
             color: 'positive',
             position: 'bottom-right'
           })
@@ -158,7 +139,7 @@ export const useAlmacenStore = defineStore('almacen', {
         console.log(error)
         Notify.create({
           type: 'warning',
-          message: 'Error al intentar actualizar el Almacen',
+          message: 'Error al intentar actualizar el producto',
           color: 'warning',
           position: 'center'
         })
