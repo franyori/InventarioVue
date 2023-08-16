@@ -63,6 +63,7 @@
       v-model="drawer"
       show-if-above
       :width="260"
+      bordered
       :mini="miniState"
       @mouseover="miniState = false"
       @mouseout="miniState = true"
@@ -73,8 +74,8 @@
             class="text-white rounded-borders"
             expand-separator
             icon="dashboard"
-            label="Adminstración"
-            to="/Login"
+            label="Inicio"
+            to="/"
             no-caps
             expand-icon="none"
           >
@@ -153,36 +154,33 @@
             label="Terceros"
             no-caps
           >
-            <q-item-section side>
+            <q-item-section class="text-white" side>
               <q-btn
                 size="14px"
                 :to="{ name: 'personas' }"
                 flat
-                icon="person_add"
-                label="Persona"
+                icon="person"
+                label="Personas"
                 no-caps
-                color="primary"
               ></q-btn>
             </q-item-section>
-            <q-item-section side>
+            <q-item-section class="text-white" side>
               <q-btn
                 size="14px"
                 :to="{ name: 'clientes' }"
                 flat
-                icon="person_add"
+                icon="person"
                 label="Clientes"
                 no-caps
-                color="primary"
               ></q-btn>
             </q-item-section>
-            <q-item-section side>
+            <q-item-section class="text-white" side>
               <q-btn
                 :to="{ name: 'proveedores' }"
                 size="14px"
                 flat
-                icon="person_add"
+                icon="person"
                 label="Proveedores"
-                color="primary"
                 no-caps
               ></q-btn>
             </q-item-section>

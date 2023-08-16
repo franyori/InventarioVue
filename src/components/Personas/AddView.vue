@@ -41,14 +41,15 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pr-md">
             <q-input
               dense
-              filled
               v-model="name"
               standout
               bg-color="accent"
               label="Nombres"
               hint="Primero y Segundo"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Escriba sus Nombres']"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Escriba sus Nombres',
+              ]"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="draw" />
@@ -60,13 +61,12 @@
               dense
               standout
               bg-color="accent"
-              filled
               v-model="apellido"
               label="Apellidos"
               hint="Primero y segundo"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Escriba sus Apellidos'
+                (val) => (val && val.length > 0) || 'Escriba sus Apellidos',
               ]"
             >
               <template v-slot:prepend>
@@ -76,32 +76,23 @@
           </div>
         </div>
         <div
-          class="
-              col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6
-              text-no-wrap
-              q-pt-md q-pr-md
-            "
+          class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-no-wrap q-pt-md q-pr-md"
         >
           <p class="col text-weight-medium">Documento</p>
         </div>
         <div class="row">
           <div
-            class="
-              col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4
-              text-no-wrap
-              q-pt-xs
-            "
+            class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-no-wrap q-pt-xs"
           >
             <q-select
               borderless
               dense
-              filled
               v-model="nacionalidad"
               :options="options"
               label="Tipo"
               bg-color="accent"
               :rules="[
-                val => (val && val.length > 0) || 'Nacionalidad Invalidad'
+                (val) => (val && val.length > 0) || 'Nacionalidad Invalidad',
               ]"
             >
               <template v-slot:prepend>
@@ -110,42 +101,33 @@
             </q-select>
           </div>
           <div
-            class="
-              col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8
-              text-no-wrap
-              q-pt-xs q-pr-md
-            "
+            class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 text-no-wrap q-pt-xs q-pr-md"
           >
             <q-input
               borderless
               type="number"
-              maxlength='10'
+              maxlength="10"
               dense
-              filled
               v-model="cedula"
               label="Cedula"
               bg-color="accent"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Cedula Invalidad',
-                       val => val.length >= 6  || 'Minimo 6 Digitos',
-                       val => val.length <= 10  || 'No Mayor de 10 Digitos'
-
-            ]"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Cedula Invalidad',
+                (val) => val.length >= 6 || 'Minimo 6 Digitos',
+                (val) => val.length <= 10 || 'No Mayor de 10 Digitos',
+              ]"
             />
           </div>
         </div>
 
         <div class="row">
           <div
-            class="
-                col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6
-                q-pr-md q-pt-md
-              "
+            class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pr-md q-pt-md"
           >
             <p class="col text-subtitle2">Teléfono</p>
             <q-input
               dense
-              filled
               type="tel"
               v-model="telefono"
               standout
@@ -153,7 +135,9 @@
               label="Teléfono"
               hint="Teléfono de Contacto"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Conctato No valido']"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Conctato No valido',
+              ]"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="phone_android" />
@@ -162,15 +146,11 @@
           </div>
 
           <div
-            class="
-                col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6
-                q-pr-md q-pt-md
-              "
+            class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pr-md q-pt-md"
           >
             <p class="col text-subtitle2">Correo</p>
             <q-input
               dense
-              filled
               v-model="correo"
               type="email"
               standout
@@ -178,7 +158,9 @@
               label="Correo"
               hint="Correo de Contacto"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Conctato No valido']"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Conctato No valido',
+              ]"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="contact_mail" />
@@ -197,7 +179,9 @@
             hint="Fecha nacimiento"
             type="date"
             lazy-rules
-            :rules="[val => (val && val.length > 0) || 'Nacimiento no valido']"
+            :rules="[
+              (val) => (val && val.length > 0) || 'Nacimiento no valido',
+            ]"
           >
             <template v-slot:prepend>
               <q-icon color="primary" name="draw" />
@@ -229,12 +213,14 @@
           <p class="col text-subtitle2">Dirección de habitación</p>
           <q-input
             v-model="direccion"
-            filled
             clearable
+            standout
+            dense
             type="textarea"
             color="red-12"
             label="Dirección"
-            input-style="height:2px"
+            style="height: 12px"
+            input-style="height:4px"
             bg-color="accent"
           />
         </div>
@@ -254,40 +240,39 @@
   </div>
 </template>
 <script setup>
-import { Notify } from 'quasar'
-import { ref , onUpdated} from 'vue'
-import { useQuasar } from 'quasar'
-import PersonaService from '../../services/PersonaService'
-import { getCurrentInstance } from 'vue'
-import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore'
+import { Notify } from "quasar";
+import { ref, onUpdated } from "vue";
+import { useQuasar } from "quasar";
+import PersonaService from "../../services/PersonaService";
+import { getCurrentInstance } from "vue";
+import { usePersonaByIdStore } from "../../stores/PersonaByIdStore";
 
-const store = usePersonaByIdStore()
+const store = usePersonaByIdStore();
 const instance = getCurrentInstance();
-const $q = useQuasar()
-const genero = ref('M')
-const shape = ref('N')
-const name = ref('')
-const cedula = ref('')
-const apellido = ref('')
-const correo = ref('')
-const telefono = ref('')
-const nacimiento = ref('')
-const direccion = ref('')
-const nacionalidad = ref('')
-const options = ref(['V', 'E'])
+const $q = useQuasar();
+const genero = ref("M");
+const shape = ref("N");
+const name = ref("");
+const cedula = ref("");
+const apellido = ref("");
+const correo = ref("");
+const telefono = ref("");
+const nacimiento = ref("");
+const direccion = ref("");
+const nacionalidad = ref("");
+const options = ref(["V", "E"]);
 
 const onReset = () => {
-  name.value = null
-  cedula.value = ''
-  correo.value = ''
-  telefono.value = ''
-  apellido.value = ''
-  direccion.value = ''
-  nacionalidad.value = ''
-  shape.value = 'N'
-  genero.value = 'M'
-}
-
+  name.value = null;
+  cedula.value = "";
+  correo.value = "";
+  telefono.value = "";
+  apellido.value = "";
+  direccion.value = "";
+  nacionalidad.value = "";
+  shape.value = "N";
+  genero.value = "M";
+};
 
 const params = {
   nombres_per: name,
@@ -299,20 +284,19 @@ const params = {
   fecha_nac_per: nacimiento,
   direccion_per: direccion,
   tipo_per: shape.value,
-  genero_per: genero.value
-}
-
-
-const addPersonaService = new PersonaService()
-
-  const AddPersona = async () => {
-  const propss  = ref(params)
-  await addPersonaService.addPer(propss.value)
-  instance.proxy.$forceUpdate()
-  onReset()
+  genero_per: genero.value,
 };
- 
+
+const addPersonaService = new PersonaService();
+
+const AddPersona = async () => {
+  const propss = ref(params);
+  await addPersonaService.addPer(propss.value);
+  instance.proxy.$forceUpdate();
+  onReset();
+};
+
 onUpdated(async () => {
-await store.PersonaAll()
+  await store.PersonaAll();
 });
 </script>

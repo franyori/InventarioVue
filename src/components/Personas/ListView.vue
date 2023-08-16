@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12 q-pa-md"> 
+  <div class="col col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 q-pa-md">
     <q-card>
       <q-card-section class="q-pa-none">
         <q-table
@@ -7,7 +7,6 @@
           :columns="columns"
           ref="tableRef"
           row-key="id"
-          dense
           :filter="filter"
           :pagination="initialPagination"
           class="text-center box-shadow"
@@ -16,7 +15,7 @@
           <template v-slot:top-left>
             <q-input
               color="primary"
-              class="text-secondary q-mb-lg q-mt-sm"
+              class="text-secondary q-mb-md q-mt-sm"
               standout
               round
               bg-color="accent"
@@ -55,96 +54,86 @@
         </q-table>
       </q-card-section>
     </q-card>
-    <ModalEdit
-      :persistent="persistent"
-      @closeModel="persistent = false"
-    >
+    <ModalEdit :persistent="persistent" @closeModel="persistent = false">
     </ModalEdit>
   </div>
 </template>
 
 <script setup>
-import ModalEdit from './ModalEditView.vue'
-import { ref, onUpdated} from 'vue'
+import ModalEdit from "./ModalEditView.vue";
+import { ref, onUpdated } from "vue";
 //provide('data',props)
-import {  usePersonaByIdStore } from '../../stores/PersonaByIdStore';
-import { getCurrentInstance } from 'vue'
+import { usePersonaByIdStore } from "../../stores/PersonaByIdStore";
+import { getCurrentInstance } from "vue";
 
 const instance = getCurrentInstance();
-const store = usePersonaByIdStore()
-const tableRef = ref()
-const persistent = ref(false)
+const store = usePersonaByIdStore();
+const tableRef = ref();
+const persistent = ref(false);
 const initialPagination = ref({
-  sortBy: 'desc',
+  sortBy: "desc",
   descending: false,
   page: 1,
-  rowsPerPage: 10
-})
+  rowsPerPage: 10,
+});
 
-const filter = ref('')
+const filter = ref("");
 
 onUpdated(async () => {
- await store.PersonaAll()
-  tableRef.value.requestServerInteraction()
-})
+  await store.PersonaAll();
+  tableRef.value.requestServerInteraction();
+});
 
+const DeletePersona = async (id) => {
+  await store.deletePersona(id);
+  instance.proxy.$forceUpdate();
+};
 
-const DeletePersona = async id => {
-  await store.deletePersona(id)
-  instance.proxy.$forceUpdate()
-}
-
-const EditarPersona = async id => {
-  await store.editPersona(id)
-}
+const EditarPersona = async (id) => {
+  await store.editPersona(id);
+};
 
 const openModal = () => {
-  persistent.value = true
-}
+  persistent.value = true;
+};
 
 const columns = [
   {
-    name: 'nacionalidad_per',
+    name: "documento_per",
     required: true,
-    label: 'Nacionalidad',
-    align: 'center',
-    field: row => row.nacionalidad_per,
-    format: val => `${val}`
+    label: "Cedula",
+    align: "left",
+    field: (row) => row.nacionalidad_per + " - " + row.documento_per,
+    format: (val) => `${val}`,
   },
   {
-    name: 'documento_per',
-    align: 'center',
-    label: 'Cedula',
-    field: 'documento_per'
+    name: "nombres_per",
+    label: "Nombres",
+    align: "left",
+    field: "nombres_per",
   },
   {
-    name: 'nombres_per',
-    label: 'Nombres',
-    align: 'center',
-    field: 'nombres_per'
+    name: "apellidos_per",
+    label: "Apellidos",
+    align: "left",
+    field: "apellidos_per",
   },
   {
-    name: 'apellidos_per',
-    label: 'Apellidos',
-    align: 'center',
-    field: 'apellidos_per'
+    name: "tlf_per",
+    label: "Teléfono",
+    align: "left",
+    field: "tlf_per",
   },
   {
-    name: 'tlf_per',
-    label: 'Teléfono',
-    align: 'center',
-    field: 'tlf_per'
+    name: "direccion_per",
+    label: "Dirección",
+    align: "left",
+    field: "direccion_per",
   },
   {
-    name: 'direccion_per',
-    label: 'Dirección',
-    align: 'center',
-    field: 'direccion_per'
+    name: "actions",
+    align: "center",
+    label: "Acciones",
   },
-  {
-    name: 'actions',
-    align: 'center',
-    label: 'Acciones'
-  }
 ];
 </script>
