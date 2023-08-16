@@ -2,7 +2,7 @@
   <div class="col col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 q-pa-md">
     <q-card class="q-pa-md box-shadow">
       <div class="row">
-        <div class="col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <div class="col-12">
           <q-card-section>
             <div class="col text-center text-primary text-bold text-h5">
               Agregar persona
@@ -38,36 +38,36 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pr-md">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pa-xs">
             <q-input
               dense
               v-model="name"
               standout
               bg-color="accent"
               label="Nombres"
-              hint="Primero y Segundo"
+              hint="Nombres"
+              label-color="black"
+              input-class="text-black"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Escriba sus Nombres',
-              ]"
+              :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="draw" />
               </template>
             </q-input>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pr-md">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 q-pa-xs">
             <q-input
+              label-color="black"
+              input-class="text-black"
               dense
               standout
               bg-color="accent"
               v-model="apellido"
               label="Apellidos"
-              hint="Primero y segundo"
+              hint="Apellidos"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Escriba sus Apellidos',
-              ]"
+              :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="draw" />
@@ -75,25 +75,21 @@
             </q-input>
           </div>
         </div>
-        <div
-          class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-no-wrap q-pt-md q-pr-md"
-        >
-          <p class="col text-weight-medium">Documento</p>
-        </div>
         <div class="row">
+          <div class="col-12 q-mt-md">
+            <p class="col text-weight-medium">Documento</p>
+          </div>
           <div
-            class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-no-wrap q-pt-xs"
+            class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 q-pa-xs text-no-wrap q-pt-xs"
           >
             <q-select
-              borderless
               dense
+              standout
               v-model="nacionalidad"
               :options="options"
               label="Tipo"
               bg-color="accent"
-              :rules="[
-                (val) => (val && val.length > 0) || 'Nacionalidad Invalidad',
-              ]"
+              :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="wallet" />
@@ -101,11 +97,13 @@
             </q-select>
           </div>
           <div
-            class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 text-no-wrap q-pt-xs q-pr-md"
+            class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 text-no-wrap q-pt-xs q-pa-xs"
           >
             <q-input
-              borderless
-              type="number"
+              label-color="black"
+              input-class="text-black"
+              standout
+              mask="##########"
               maxlength="10"
               dense
               v-model="cedula"
@@ -113,9 +111,9 @@
               bg-color="accent"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Cedula Invalidad',
-                (val) => val.length >= 6 || 'Minimo 6 Digitos',
-                (val) => val.length <= 10 || 'No Mayor de 10 Digitos',
+                (val) => (val && val.length > 0) || 'Campo requerido',
+                (val) => val.length >= 6 || 'Minimo 6 digitos',
+                (val) => val.length <= 10 || 'No Mayor de 10 digitos',
               ]"
             />
           </div>
@@ -127,8 +125,10 @@
           >
             <p class="col text-subtitle2">Teléfono</p>
             <q-input
+              label-color="black"
+              input-class="text-black"
               dense
-              type="tel"
+              mask="####-#######"
               v-model="telefono"
               standout
               bg-color="accent"
@@ -150,17 +150,17 @@
           >
             <p class="col text-subtitle2">Correo</p>
             <q-input
+              label-color="black"
+              input-class="text-black"
               dense
               v-model="correo"
               type="email"
               standout
               bg-color="accent"
               label="Correo"
-              hint="Correo de Contacto"
+              hint="Correo de contacto"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Conctato No valido',
-              ]"
+              :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
             >
               <template v-slot:prepend>
                 <q-icon color="primary" name="contact_mail" />
@@ -172,6 +172,8 @@
         <div class="col-12 q-pr-md q-pt-md">
           <p class="col text-subtitle2">Fecha de nacimiento</p>
           <q-input
+            label-color="black"
+            input-class="text-black"
             dense
             standout
             bg-color="accent"
@@ -179,9 +181,7 @@
             hint="Fecha nacimiento"
             type="date"
             lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'Nacimiento no valido',
-            ]"
+            :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
           >
             <template v-slot:prepend>
               <q-icon color="primary" name="draw" />
@@ -189,7 +189,7 @@
           </q-input>
         </div>
         <div class="col-12 q-pr-md q-pt-md">
-          <p class="col text-subtitle2">Genero</p>
+          <p class="col text-subtitle2">Género</p>
           <div class="q-gutter-sm">
             <q-radio
               dense
@@ -219,19 +219,27 @@
             type="textarea"
             color="red-12"
             label="Dirección"
-            style="height: 12px"
-            input-style="height:4px"
+            input-style="height:34px"
             bg-color="accent"
           />
         </div>
-        <div class="col-12 q-pt-md">
-          <q-btn no-caps label="Guardar" type="submit" color="primary" />
+        <div class="col-12 q-pt-md text-right">
           <q-btn
+            padding="2px 22px 2px 22px"
+            no-caps
+            style="border-radius: 8px"
+            label="Guardar"
+            type="submit"
+            color="primary"
+          />
+          <q-btn
+            outline
+            padding="2px 22px 2px 22px"
+            style="border-radius: 8px"
             no-caps
             label="Limpiar"
             type="reset"
             color="primary"
-            flat
             class="q-ml-sm"
           />
         </div>
